@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>404 - Singularité atteinte</title>
+  <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      font-family: 'VT323', monospace;
+      background-color: #000;
+      color: #fff;
+      text-align: center;
+      margin: 0;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    #scene-container {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
+    .container {
+      z-index: 2;
+      position: relative;
+      background-color: rgba(0, 0, 0, 0.5);
+      padding: 40px;
+      border-radius: 15px;
+      box-shadow: 0 5px 20px rgba(0, 255, 255, 0.2);
+      border: 2px solid rgba(0, 255, 255, 0.3);
+    }
+    h1 {
+      font-size: 5em;
+      margin-bottom: 10px;
+      text-shadow: 0 0 10px #0ff, 0 0 20px #0ff, 0 0 30px #0ff;
+      letter-spacing: 3px;
+    }
+    p {
+      font-size: 1.5em;
+      line-height: 1.7;
+      margin-bottom: 30px;
+      color: #ddd;
+      text-shadow: 0 0 5px #0ff;
+    }
+    a {
+      color: #0ff;
+      text-decoration: none;
+      font-weight: bold;
+      transition: color 0.3s ease, text-shadow 0.3s ease;
+      cursor: pointer;
+    }
+    a:hover {
+      color: #fff;
+      text-shadow: 0 0 10px #0ff;
+    }
+    .search-form {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 30px;
+    }
+    .search-input {
+      padding: 12px 16px;
+      border: 2px solid #0ff;
+      border-radius: 8px;
+      font-size: 1em;
+      width: 70%;
+      background-color: rgba(0, 0, 0, 0.3);
+      color: #fff;
+    }
+    .search-input::placeholder {
+      color: #99ffff;
+    }
+    .search-input:focus {
+      outline: none;
+      border-color: #fff;
+      box-shadow: 0 0 8px #0ff;
+    }
+    .search-button {
+      background-color: #0ff;
+      color: #000;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 8px;
+      font-size: 1em;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease, color 0.3s ease;
+      margin-left: 10px;
+    }
+    .search-button:hover {
+      background-color: #fff;
+      color: #000;
+    }
+  </style>
+</head>
+<body>
+  <div id="scene-container"></div>
+
+  <div class="container">
+    <h1>404 - Singularité atteinte</h1>
+    <p>Erreur ! Vous avez atteint une Singularité. L'espace-temps s'est replié sur lui-même.</p>
+    <p>Essayez de <a href="">retour dans l'accueil</a> ou entrez une nouvelle coordonnée de navigation :</p>
+    <form class="search-form">
+      <input
+        type="text"
+        class="search-input"
+        placeholder="Coordonnées d'évitement"
+        autocomplete="off"
+      />
+      <a href=""><button type="button" class="search-button">Scanner</button></a>
+</form>
+
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+  <script>
+    // === THREE.js setup ===
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(
+      75,
+      window.innerWidth / window.innerHeight,
+      0.1,
+      1000
+    );
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setClearColor(0x000000, 0);
+    document.getElementById('scene-container').appendChild(renderer.domElement);
+
+    const geometry = new THREE.TorusKnotGeometry(1, 0.3, 100, 16);
+    const material = new THREE.MeshStandardMaterial({
+      color: 0x00ffff,
+      roughness: 0.2,
+      metalness: 0.8,
+    });
+    const torusKnot = new THREE.Mesh(geometry, material);
+    scene.add(torusKnot);
+
+    camera.position.z = 4;
+
+    scene.add(new THREE.AmbientLight(0x404040));
+
+    const pointLight = new THREE.PointLight(0xffffff, 1);
+    pointLight.position.set(5, 5, 5);
+    scene.add(pointLight);
+
+    const loader = new THREE.TextureLoader();
+    loader.load(
+      'https://i.pinimg.com/originals/e8/a1/17/e8a1179c287371815a8250f100e91372.gif',
+      function (texture) {
+        const planeGeometry = new THREE.PlaneGeometry(1, 1);
+        const planeMaterial = new THREE.MeshBasicMaterial({
+          map: texture,
+          transparent: true,
+        });
+        const lostManPlane = new THREE.Mesh(planeGeometry, planeMaterial);
+        lostManPlane.scale.set(0.5, 0.5, 0.5);
+        lostManPlane.position.set(0, 1, 0);
+        scene.add(lostManPlane);
+
+        function animateLostMan() {
+          lostManPlane.rotation.y += 0.01;
+          requestAnimationFrame(animateLostMan);
+          renderer.render(scene, camera);
+        }
+        animateLostMan();
+      }
+    );
+
+    function animate() {
+      requestAnimationFrame(animate);
+      torusKnot.rotation.x += 0.01;
+      torusKnot.rotation.y += 0.01;
+      renderer.render(scene, camera);
+    }
+    animate();
+
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+
+    // === particles.js setup ===
+    particlesJS('scene-container', {
+      particles: {
+        number: { value: 40, density: { enable: true, value_area: 800 } },
+        color: { value: '#00ffff' },
+        shape: {
+          type: 'circle',
+          stroke: { width: 0, color: '#000000' },
+          polygon: { nb_sides: 5 },
+        },
+        opacity: {
+          value: 0.5,
+          random: true,
+          anim: { enable: false, speed: 1, opacity_min: 0.1, sync: false },
+        },
+        size: {
+          value: 2,
+          random: true,
+          anim: { enable: false, speed: 40, size_min: 0.1, sync: false },
+        },
+        line_linked: {
+          enable: true,
+          distance: 150,
+          color: '#00ffff',
+          opacity: 0.4,
+          width: 1,
+        },
+        move: {
+          enable: true,
+          speed: 2,
+          direction: 'none',
+          random: true,
+          straight: false,
+          out_mode: 'out',
+          bounce: false,
+          attract: { enable: false, rotateX: 600, rotateY: 1200 },
+        },
+      },
+      interactivity: {
+        detect_on: 'canvas',
+        events: {
+          onhover: { enable: true, mode: 'grab' },
+          onclick: { enable: true, mode: 'push' },
+          resize: true,
+        },
+        modes: {
+          grab: { distance: 140, line_linked: { opacity: 1 } },
+          push: { particles_nb: 4 },
+          remove: { particles_nb: 2 },
+        },
+      },
+      retina_detect: true,
+    });
+  </script>
+</body>
+</html>

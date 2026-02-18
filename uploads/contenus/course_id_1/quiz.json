@@ -1,0 +1,41 @@
+{
+    "titre_examen": "Examen Final QCM: Introduction au PHP",
+    "instructions": "Veuillez lire attentivement les questions et choisir la meilleure réponse. Un score de 70% est requis pour réussir.",
+    "seuil_reussite": 70,
+    "questions": [
+      {
+        "id": 1,
+        "points": 5,
+        "question_text": "Quel est le délimiteur de balise PHP correct ?",
+        "options": [
+          "<?php ... ?>",
+          "<% ... %>",
+          "<? ... ?>",
+          "<# ... #>"
+        ],
+        "correct_answer_index": 0
+      },
+      {
+        "id": 2,
+        "points": 10,
+        "question_text": "Parmi les fonctions suivantes, lesquelles sont utilisées pour filtrer et valider des données en PHP ?",
+        "options": [
+          "filter_var()",
+          "preg_match()",
+          "htmlentities()",
+          "stripslashes()"
+        ],
+        "correct_answer_indices": [0, 1]
+      },
+      {
+        "id": 3,
+        "points": 5,
+        "question_text": "La superglobale `$_GET` est utilisée pour collecter des données du formulaire envoyées avec la méthode HTTP POST.",
+        "options": [
+          "Vrai",
+          "Faux"
+        ],
+        "correct_answer_index": 1
+      }
+    ]
+  }

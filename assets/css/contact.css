@@ -1,0 +1,56 @@
+#site-header,
+footer {
+    background-color: #004080;
+    transition: background-color 0.3s ease, padding 0.3s ease;
+}
+
+
+.bg-primary-darker-local {
+  background-color: #003366;
+}
+  
+.text-primary-local {
+    color: #004080;
+  }
+
+
+header.scrolled {
+  background-color: rgba(0, 64, 128, 0.8);
+  -webkit-backdrop-filter: blur(12px); 
+  backdrop-filter: blur(12px);        
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  /* ombre pour décoller la page */
+ box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+}
+
+
+/* Animation pour la bordure du formulaire */
+@keyframes bordureAnimation {
+  0%, 100% {
+    border-color:rgb(74, 246, 255);
+  }
+  25% {
+    border-color:rgb(0, 60, 180);
+    box-shadow: 0 0 4px #7DF9FF, 0 0px 0px  rgb(0, 255, 255);
+   
+  }
+  50% {
+    border-color:rgb(0, 255, 255);
+    box-shadow: 0 0 4px #7dd6ff, 0 0px 0px  rgb(2, 182, 182);
+  }
+  75% {
+    border-color: #42a8db;
+  }
+  80%{
+    border-color:rgb(125, 249, 255);
+  }
+}
+
+.bordure-conteneur-animee {
+  animation-name: bordureAnimation;
+  animation-duration: 4s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+

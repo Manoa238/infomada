@@ -1,0 +1,59 @@
+/* Styles pour l'ouverture animée du formulaire d'ajout */
+.formulaire-container { 
+    transition: all 0.5s ease-in-out; 
+    max-height: 0; 
+    overflow: hidden; 
+    opacity: 0; 
+    transform: translateY(-10px); 
+}
+.formulaire-container.open { 
+    max-height: 2000px; 
+    opacity: 1; 
+    transform: translateY(0); 
+    margin-bottom: 2rem; 
+}
+
+/* Styles de base pour les modales (fenêtres pop-up) */
+.modale { 
+    display: none; 
+}
+.modale.open { 
+    display: flex; 
+}
+
+/* Animation d'apparition "fade in" pour les modales */
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+}
+.animate-fadeIn {
+     animation: fadeIn 0.2s ease-out;
+}
+
+/* =================================================================== */
+/* CSS POUR LA MODALE DE CONFIGURATION (POUR FONCTIONNER HORS LIGNE) */
+/* =================================================================== */
+        
+/* Le fond noir semi-transparent qui couvre toute la page */
+#modale-parametres {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.5); /* Équivalent à: bg-black bg-opacity-50 */
+    z-index: 50; /* z-50 */
+    align-items: center; /* items-center */
+    justify-content: center; /* justify-center */
+    padding: 1rem; /* p-4 */
+}
+
+/* La boîte blanche au centre de la modale */
+#modale-parametres > div {
+    background-color: #fff; /* bg-white */
+    border-radius: 0.75rem; /* rounded-xl */
+    box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25); /* shadow-2xl */
+    padding: 2rem; /* p-8 */
+    width: 100%; /* w-full */
+    max-width: 56rem; /* max-w-4xl */
+}

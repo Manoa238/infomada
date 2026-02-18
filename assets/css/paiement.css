@@ -1,0 +1,28 @@
+/* Animation bordure du formulaire */
+@keyframes bordureAnimation {
+    0%, 100% {
+      border-color:rgb(125, 249, 255);
+    }
+    25% {
+      border-color:rgb(0, 255, 255);
+      box-shadow: 0 0 4px #7DF9FF, 0 0px 0px  rgb(0, 255, 255);
+    }
+    50% {
+      border-color:rgb(0, 85, 255);
+      box-shadow: 0 0 4px #7DF9FF, 0 0px 0px  rgb(0, 255, 255);
+    }
+    75% {
+      border-color: #5d8ea7;
+    }
+    80%{
+      border-color:rgb(125, 249, 255);
+    }
+  }
+  
+  .bordure-conteneur-animee {
+    animation-name: bordureAnimation;
+    animation-duration: 4s;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+    border: 5px groove #3498db;
+  }

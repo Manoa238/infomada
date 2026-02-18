@@ -1,0 +1,64 @@
+[
+    {
+      "question": "Quel est le délimiteur de balise PHP correct ?",
+      "options": ["<php>...</php>", "<?php ... ?>", "<? ... ?>", "<script>...</script>"],
+      "answer": "<?php ... ?>",
+      "points": 2
+    },
+    {
+      "question": "Parmi les fonctions suivantes, lesquelles sont utilisées pour filtrer et valider des données en PHP ?",
+      "options": ["filter-var", "preg_match", "htmlentities", "htmlspecialchars"],
+      "answer": ["filter-var", "preg_match"],
+      "points": 2,
+      "multiple": true
+    },
+    {
+      "question": "La superglobale $_GET est utilisée pour collecter les données du formulaire envoyées avec la méthode HTTP POST.",
+      "options": ["Vrai", "Faux"],
+      "answer": "Faux",
+      "points": 2
+    },
+    {
+      "question": "Quelle fonction est utilisée pour inclure un fichier une seule fois en PHP ?",
+      "options": ["include()", "require()", "include_once()", "require_once()"],
+      "answer": "require_once()",
+      "points": 2
+    },
+    {
+      "question": "Quel est le résultat de '1' + 2 en PHP ?",
+      "options": ["'12'", "3", "'3'", "Erreur"],
+      "answer": "3",
+      "points": 2
+    },
+    {
+      "question": "Quelle est la manière correcte de définir une constante en PHP ?",
+      "options": ["const MY_CONSTANT = 'value';", "define('MY_CONSTANT', 'value');", "$MY_CONSTANT = 'value';", "CONSTANT = 'value';"],
+      "answer": "define('MY_CONSTANT', 'value');",
+      "points": 2
+    },
+    {
+      "question": "Lesquels de ces types de données sont des types scalaires en PHP ?",
+      "options": ["Array", "Object", "Boolean", "Integer", "String"],
+      "answer": ["Boolean", "Integer", "String"],
+      "points": 2,
+      "multiple": true
+    },
+    {
+      "question": "Quelle instruction est utilisée pour sortir d'une boucle ?",
+      "options": ["exit", "continue", "break", "return"],
+      "answer": "break",
+      "points": 2
+    },
+    {
+      "question": "Quel opérateur est utilisé pour la concaténation de chaînes de caractères en PHP ?",
+      "options": ["+", ".", "*", "&"],
+      "answer": ".",
+      "points": 2
+    },
+    {
+      "question": "Que signifie PHP ?",
+      "options": ["Personal Home Page", "PHP: Hypertext Preprocessor", "Private Hypertext Processor", "Programming Home Pages"],
+      "answer": "PHP: Hypertext Preprocessor",
+      "points": 2
+    }
+  ]

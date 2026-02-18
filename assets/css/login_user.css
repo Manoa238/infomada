@@ -1,0 +1,383 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300,400,500,600,700&display=swap');
+
+/*  DÉFINITION VARIABLES */
+:root {
+    /* Couleurs principales */
+    --color-primary: #004080;
+    --color-light: #fff;
+    --color-dark-text: #333;
+    --color-error: #3ca3e74f; /* Erreurs validation */
+
+    /* Couleurs de fond et dégradé */
+    --bg-gradient-start: #e2e2e2;
+    --bg-gradient-end: #c9d6ff;
+    --toggle-gradient-start: #5c6bc0;
+    --toggle-gradient-end: #1a76d1;
+    
+    /* Couleurs secondaires  */
+    --input-bg-color: #eee;
+    --input-error-bg-color: #edfdf9;
+    --border-color-light: #ccc;
+    
+    /* Polices */
+    --font-primary: 'Montserrat', sans-serif;
+    --font-size-base: 14px;
+    --font-size-small: 12px;
+    --font-size-medium: 13px;
+
+    /* Conteneur */
+    --container-width: 1200px; 
+    --container-height: 630px;
+    --border-radius-container: 30px;
+    --border-radius-button: 8px;
+
+    /* Ombres */
+    --box-shadow-main: 0 5px 15px rgba(0, 0, 0, 0.35);
+
+    /* Transitions */
+    --transition-speed: 0.6s;
+}
+
+/* STYLES */
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: var(--font-primary);
+}
+
+body{
+    background: linear-gradient(to right, var(--bg-gradient-start), var(--bg-gradient-end));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    height: 100vh;
+}
+
+/* CONTENEUR PRINCIPAL */
+.container{
+    background-color: var(--color-light);
+    border-radius: var(--border-radius-container);
+    box-shadow: var(--box-shadow-main);
+    position: relative;
+    overflow: hidden;
+    width: var(--container-width); 
+    max-width: 100%;
+    min-height: var(--container-height); 
+}
+
+/* ÉLÉMENTS DU CONTENEUR */
+.container p{
+    font-size: var(--font-size-base);
+    line-height: 20px;
+    letter-spacing: 0.3px;
+    margin: 20px 0;
+}
+
+.container span{
+    font-size: var(--font-size-small);
+}
+
+.container a{
+    color: var(--color-dark-text);
+    font-size: var(--font-size-medium);
+    text-decoration: none;
+    margin: 15px 0 10px;
+}
+
+.container button{
+    background-color: var(--color-primary);
+    color: var(--color-light);
+    font-size: var(--font-size-small);
+    padding: 10px 45px;
+    border: 1px solid transparent;
+    border-radius: var(--border-radius-button);
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+.container button.hidden{
+    background-color: transparent;
+    border-color: var(--color-light);
+}
+
+/*  FORMULAIRES */
+.container form{
+    background-color: var(--color-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 0 40px;
+    height: 100%;
+}
+
+.form-container .h1 {
+    margin-bottom: 2px;
+}
+
+.connect{
+    margin-bottom: 40px;
+}
+
+.form-container .row{
+    margin-top: 20px;
+}
+
+.container input{
+    background-color: var(--input-bg-color);
+    border: 1px solid var(--input-bg-color); /* bordure pour la transition */
+    margin: 8px 0;
+    padding: 10px 15px;
+    font-size: var(--font-size-medium);
+    border-radius: var(--border-radius-button);
+    width: 100%;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.form-container{
+    position: absolute;
+    top: 0;
+    height: 100%;
+    transition: all var(--transition-speed) ease-in-out;
+}
+
+/*  nom & prénom*/
+.name-row {
+    display: flex; /*Flexbox */
+    width: 100%; 
+    gap: 16px;   /* espace entre deux champs */
+  }
+  
+.name-row .input-group {
+flex: 1; 
+margin-bottom: 0; 
+}
+
+
+.sign-in{
+    left: 0;
+    width: 50%;
+    z-index: 2;
+}
+
+.container.active .sign-in{
+    transform: translateX(100%) ;
+}
+
+.sign-up{
+    left: 0;
+    width: 50%;
+    opacity: 0;
+    z-index: 1;
+}
+
+.input-group {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+}
+  
+.input-group label {
+    text-align: left;
+    margin-bottom: 5px;
+    font-weight: 600;
+    font-size: var(--font-size-base);
+}
+
+/* STYLES DE VALIDATION */
+.input-group label::after {
+    content: ' *';
+    color: var(--color-error);
+}
+
+input:invalid {
+    border-color: var(--color-error);
+    background-color: var(--input-error-bg-color);
+}
+
+/* ANIMATIONS */
+.container.active .sign-up{
+    transform: translateX(100%);
+    opacity: 1;
+    z-index: 5;
+    animation: move var(--transition-speed);
+}
+
+@keyframes move{
+    0%, 49.99%{
+        opacity: 0;
+        z-index: 1;
+    }
+    50%, 100%{
+        opacity: 1;
+        z-index: 5;
+    }
+}
+
+.social-icons{
+    margin: 20px 0;
+}
+
+.social-icons a{
+    border: 1px solid var(--border-color-light);
+    border-radius: 20%;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 3px;
+    width: 40px;
+    height: 40px;
+}
+
+/* Toggle Container */
+.toggle-container{
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 50%;
+    height: 100%;
+    overflow: hidden;
+    transition: all var(--transition-speed) ease-in-out;
+    border-radius: 150px 0 0 100px;
+    z-index: 1000;
+}
+
+.container.active .toggle-container{
+    transform: translateX(-100%);
+    border-radius: 0 150px 100px 0;
+}
+
+.toggle{
+    background: linear-gradient(to right, var(--toggle-gradient-start), var(--toggle-gradient-end));
+    color: var(--color-light);
+    position: relative;
+    left: -100%;
+    height: 100%;
+    width: 200%;
+    transform: translateX(0);
+    transition: all var(--transition-speed) ease-in-out;
+}
+
+.container.active .toggle{
+    transform: translateX(50%);
+}
+
+.toggle-panel{
+    position: absolute;
+    width: 50%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 0 30px;
+    text-align: center;
+    top: 0;
+    transform: translateX(0);
+    transition: all var(--transition-speed) ease-in-out;
+}
+
+.toggle-left{
+    transform: translateX(-200%);
+}
+
+.container.active .toggle-left{
+    transform: translateX(0);
+}
+
+.toggle-right{
+    right: 0;
+    transform: translateX(0);
+}
+
+.container.active .toggle-right{
+    transform: translateX(200%);
+}
+
+/* TOGGLE Mot de passe */
+
+.password-container {
+    position: relative;
+    width: 100%;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #888; 
+    transition: color 0.2s;
+}
+
+.toggle-password:hover {
+    color: var(--color-dark-text); 
+}
+
+.password-container input {
+    padding-right: 45px; 
+}
+
+/* Style séparateur "ou" */
+.divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+    margin: 10px 0;
+}
+
+.divider hr {
+    flex: 1; 
+    border: none;
+    border-top: 1px solid var(--border-color-light);
+}
+
+.divider span {
+    padding: 0 10px;
+    font-size: var(--font-size-small);
+    color: var(--color-dark-text);
+    opacity: 0.7;
+}
+
+.social-login-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 9px 5px;
+    margin-bottom: 5px;
+    border: 1px solid var(--border-color-light);
+    border-radius: var(--border-radius-button);
+    background-color: var(--color-light);
+    color: var(--color-dark-text);
+    font-size: var(--font-size-medium);
+    font-weight: 500;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.2s, border-color 0.2s;
+}
+
+.social-login-btn:hover {
+    background-color: #f9f9f9; 
+    border-color: #a0a0a0;
+}
+
+/* icônes google et facebook */
+.social-login-btn i {
+    font-size: 1.2em;
+    margin-right: 12px; 
+}
+
+.social-login-btn.facebook i {
+    color: #1877F2;
+}
+

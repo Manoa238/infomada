@@ -1,0 +1,23 @@
+/* Couleur de fond header & footer */
+#site-header,
+footer {
+    background-color: #004080;
+    transition: background-color 0.3s ease, padding 0.3s ease;
+}
+
+/* Défilement header */
+header.scrolled {
+    background-color: rgba(0, 64, 128, 0.85);
+    backdrop-filter: blur(10px);
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  }
+
+.bg-primary-darker-local {
+background-color: #003366;
+}
+
+.text-primary-local {
+    color: #004080;
+  }

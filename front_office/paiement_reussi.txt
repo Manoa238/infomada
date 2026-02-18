@@ -1,0 +1,191 @@
+<?php
+session_start();
+require_once '../include/config.php';
+
+// Vérifier si un ID de paiement est passé dans l'URL
+if (!isset($_GET['id']) || !filter_var($_GET['id'], FILTER_VALIDATE_INT)) {
+    // Rediriger si l'ID est manquant ou invalide
+    header('Location: catalogue_cours.php');
+    exit();
+}
+$paiement_id = $_GET['id'];
+
+$recu_data = null;
+try {
+    $dsn = "pgsql:host=$host;port=$port;dbname=$dbname";
+    $conn = new PDO($dsn, $user, $password);
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    // Requête pour récupérer toutes les informations nécessaires pour le reçu
+    $stmt = $conn->prepare("
+        SELECT 
+            p.reference_transaction,
+            p.numero_telephone,
+            p.date_paiement,
+            u.first_name AS prenom_utilisateur,
+            u.last_name AS nom_utilisateur,
+            c.titre AS titre_cours,
+            c.duree AS duree_cours,
+            c.prix AS prix_cours,
+            niv.nom AS niveau_cours
+        FROM public.paiements p
+        JOIN public.users u ON p.id_utilisateur = u.id
+        JOIN public.cours c ON p.id_cours = c.id
+        LEFT JOIN public.niveaux niv ON c.niveau_id = niv.id
+        WHERE p.id = :paiement_id
+    ");
+    $stmt->execute([':paiement_id' => $paiement_id]);
+    $recu_data = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if (!$recu_data) {
+        throw new Exception("Reçu non trouvé.");
+    }
+
+} catch (Exception $e) {
+    $_SESSION['error_message'] = "Erreur : impossible d'afficher le reçu.";
+    header('Location: catalogue_cours.php');
+    exit();
+} finally {
+    $conn = null;
+}
+?>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paiement Réussi</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../assets/js/Tailwind.js"></script>
+</head>
+<body class="bg-slate-50 font-sans text-slate-700 antialiased">
+    <main class="py-16 sm:py-24">
+        <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <!-- Boîte de message de succès -->
+            <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-6 rounded-lg shadow-md mb-8 text-center">
+                <i class="fa-solid fa-check-circle fa-3x text-green-500"></i>
+                <h1 class="text-2xl font-bold mt-4">Paiement soumis avec succès !</h1>
+                <p class="mt-2">Votre demande d'inscription est en cours de validation. Vous recevrez un email dès que votre accès au cours sera débloqué.</p>
+            </div>
+
+            <!-- Le Reçu -->
+            <div class="bg-white rounded-xl shadow-xl border border-slate-200">
+                <div class="p-8">
+                    <div class="flex justify-between items-start mb-8">
+                        <img src="../assets/img/inf.png" alt="Logo INFOMADA" class="h-12 w-auto">
+                        <div class="text-right">
+                            <h2 class="text-2xl font-bold text-slate-800">Reçu de Paiement</h2>
+                            <p class="text-sm text-slate-500">Date : <?php echo date('d/m/Y H:i', strtotime($recu_data['date_paiement'])); ?></p>
+                        </div>
+                    </div>
+                    
+                    <div class="border-t border-slate-200 pt-6 space-y-4 text-sm">
+                        <div class="flex justify-between">
+                            <span class="text-slate-500">Facturé à :</span>
+                            <span class="font-semibold text-slate-800"><?php echo htmlspecialchars($recu_data['prenom_utilisateur'] . ' ' . $recu_data['nom_utilisateur']); ?></span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-slate-500">Cours :</span>
+                            <span class="font-semibold text-slate-800"><?php echo htmlspecialchars($recu_data['titre_cours']); ?></span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-slate-500">Niveau :</span>
+                            <span class="font-semibold text-slate-800"><?php echo htmlspecialchars($recu_data['niveau_cours']); ?></span>
+                        </div>
+                         <div class="flex justify-between">
+                            <span class="text-slate-500">Durée :</span>
+                            <span class="font-semibold text-slate-800"><?php echo htmlspecialchars($recu_data['duree_cours']); ?></span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-slate-500">N° de téléphone :</span>
+                            <span class="font-semibold text-slate-800"><?php echo htmlspecialchars($recu_data['numero_telephone']); ?></span>
+                        </div>
+                         <div class="flex justify-between">
+                            <span class="text-slate-500">Référence de transaction :</span>
+                            <span class="font-mono text-xs font-semibold text-slate-800"><?php echo htmlspecialchars($recu_data['reference_transaction']); ?></span>
+                        </div>
+                    </div>
+
+                    <div class="mt-8 pt-6 border-t border-slate-200 flex justify-between items-center">
+                        <span class="text-base font-medium text-slate-600">Montant Payé</span>
+                        <span class="text-2xl font-bold text-slate-900"><?php echo htmlspecialchars(number_format($recu_data['prix_cours'], 0, '', ' ')); ?> MGA</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center mt-8">
+                <a href="catalogue_cours.php" class="bg-sky-600 text-white font-bold py-3 px-8 rounded-lg hover:bg-sky-700 transition-colors shadow-md">
+                    OK
+                </a>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
+
+
+<?php
+session_start();
+require_once '../include/config.php';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SESSION['user_id'])) {
+
+    $id_cours = filter_input(INPUT_POST, 'course_id', FILTER_VALIDATE_INT);
+    $id_utilisateur = $_SESSION['user_id'];
+    $reference_transaction = trim($_POST['transaction_id']);
+    $numero_telephone = trim($_POST['phone_number']);
+
+    // Validation du numéro de téléphone malgache
+    if (!preg_match('/^03[2348][0-9]{7}$/', $numero_telephone)) {
+        $_SESSION['error_message'] = "Le format du numéro de téléphone est invalide. Il doit comporter 10 chiffres (ex: 034 XX XXX XX).";
+        header('Location: ../front_office/paiement.php?course_id=' . $id_cours);
+        exit();
+    }
+
+    if (!$id_cours || empty($reference_transaction)) {
+        $_SESSION['error_message'] = "Veuillez remplir tous les champs de confirmation.";
+        header('Location: ../front_office/paiement.php?course_id=' . $id_cours);
+        exit();
+    }
+
+    try {
+        $dsn = "pgsql:host=$host;port=$port;dbname=$dbname";
+        $conn = new PDO($dsn, $user, $password);
+        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        // MODIFICATION : On ajoute "RETURNING id" pour récupérer l'ID du nouvel enregistrement
+        $sql = "INSERT INTO public.paiements (id_utilisateur, id_cours, reference_transaction, numero_telephone, statut) 
+                VALUES (:id_utilisateur, :id_cours, :reference_transaction, :numero_telephone, 'en attente')
+                RETURNING id";
+        
+        $stmt = $conn->prepare($sql);
+        $stmt->execute([
+            ':id_utilisateur' => $id_utilisateur,
+            ':id_cours' => $id_cours,
+            ':reference_transaction' => $reference_transaction,
+            ':numero_telephone' => $numero_telephone
+        ]);
+
+        // Récupérer l'ID retourné
+        $new_paiement_id = $stmt->fetchColumn();
+
+        // MODIFICATION : Rediriger vers la page de succès avec le nouvel ID
+        header('Location: ../front_office/paiement_succes.php?id=' . $new_paiement_id);
+        exit();
+
+    } catch (PDOException $e) {
+        $_SESSION['error_message'] = "Erreur de base de données : " . $e->getMessage();
+        header('Location: ../front_office/paiement.php?course_id=' . $id_cours);
+        exit();
+    }
+
+} else {
+    header('Location: ../front_office/catalogue_cours.php');
+    exit();
+}
+?>

@@ -1,0 +1,19 @@
+/* Fond du header, du hero et du footer */
+.bg-primary-local {
+  background-color: #004080;
+}
+
+/* Texte du bouton Connexion & titres des cartes */
+.text-primary-local {
+  color: #004080;
+}
+
+.text-secondary-local {
+  color: #0054a8
+}
+
+/* Fond du barre de recherche */
+.bg-primary-darker-local {
+  background-color: #003366;
+}
+
